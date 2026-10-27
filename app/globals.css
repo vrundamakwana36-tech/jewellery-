@@ -1,0 +1,462 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Atelier Color Palette */
+  --bg-noir: #090807;
+  --bg-atelier: #0D0B0A;
+  --bg-card: rgba(18, 16, 14, 0.65);
+  --bg-card-hover: rgba(25, 22, 19, 0.85);
+  
+  /* Champagne Gold Accents */
+  --gold-champagne: #D4AF37;
+  --gold-light: #F4E7BE;
+  --gold-warm: #C5A059;
+  --gold-deep: #997B28;
+  --gold-glow-mandatory: rgba(212, 175, 55, 0.07);
+  --gold-border: rgba(212, 175, 55, 0.18);
+  --gold-border-bright: rgba(212, 175, 55, 0.45);
+  
+  /* Candlelight Warmth */
+  --candle-flame: #FFA63D;
+  --candle-glow: rgba(255, 166, 61, 0.06);
+
+  /* Typography Colors */
+  --text-ivory: #FDFBF7;
+  --text-champagne: #F1E5D1;
+  --text-muted: #A39B8F;
+  --text-dim: #6E685F;
+
+  /* Typography Fonts */
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Cinzel', serif;
+
+  /* Transitions */
+  --ease-atelier: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-soft: cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--bg-noir);
+  color: var(--text-ivory);
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--bg-noir);
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+  cursor: none; /* Controlled by CustomCursor */
+}
+
+/* Fallback cursor for touch/mobile devices */
+@media (pointer: coarse) {
+  body {
+    cursor: auto !important;
+  }
+}
+
+/* Typography Helpers */
+.font-serif-italic {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 300;
+}
+
+.heading-display {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  color: var(--text-ivory);
+  line-height: 1.08;
+}
+
+.eyebrow-luxury {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: var(--gold-champagne);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.eyebrow-luxury::before {
+  content: '';
+  display: inline-block;
+  width: 18px;
+  height: 1px;
+  background: var(--gold-champagne);
+  opacity: 0.6;
+}
+
+/* Champagne Gold Text Gradient */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #FFF9EA 0%, #D4AF37 50%, #B8922C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+/* ==========================================================================
+   GRAIN TEXTURE OVERLAY AT 4% OPACITY (MANDATORY SPEC)
+   ========================================================================== */
+.grain-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+
+/* ==========================================================================
+   CANDLELIGHT ATELIER AMBIENT GLOW
+   ========================================================================== */
+.candlelight-ambient {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(circle at 50% 25%, var(--candle-glow) 0%, transparent 60%);
+  opacity: 0.6;
+  transition: opacity 1.2s ease;
+}
+
+.candlelight-mode-active .candlelight-ambient {
+  opacity: 1;
+  animation: candleFlicker 8s ease-in-out infinite alternate;
+}
+
+@keyframes candleFlicker {
+  0% { opacity: 0.75; transform: scale(1); }
+  25% { opacity: 0.85; transform: scale(1.02) translate(3px, -2px); }
+  50% { opacity: 0.68; transform: scale(0.99) translate(-2px, 1px); }
+  75% { opacity: 0.90; transform: scale(1.03) translate(1px, -3px); }
+  100% { opacity: 0.80; transform: scale(1); }
+}
+
+/* ==========================================================================
+   SCROLL PROGRESS BAR IN CHAMPAGNE GOLD GRADIENT
+   ========================================================================== */
+.scroll-progress-bar-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.03);
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.scroll-progress-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #997B28 0%, #D4AF37 50%, #F5E8C7 75%, #D4AF37 100%);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.6), 0 0 20px rgba(212, 175, 55, 0.3);
+  transition: width 0.08s ease-out;
+}
+
+/* ==========================================================================
+   CUSTOM CURSOR (OUTER RING SCALING TO 48PX ON CTA HOVER)
+   ========================================================================== */
+.custom-cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  background-color: var(--gold-champagne);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10001;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease, transform 0.15s ease-out;
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.8);
+}
+
+.custom-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 26px;
+  height: 26px;
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s var(--ease-atelier),
+              height 0.3s var(--ease-atelier),
+              border-color 0.3s ease,
+              background-color 0.3s ease,
+              transform 0.08s ease-out;
+}
+
+/* Active CTA Hover State: Exactly 48px scaling! */
+.custom-cursor-ring.cursor-hover {
+  width: 48px !important;
+  height: 48px !important;
+  border-color: rgba(212, 175, 55, 0.95) !important;
+  background-color: rgba(212, 175, 55, 0.08) !important;
+  backdrop-filter: blur(2px);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.25);
+}
+
+.custom-cursor-dot.cursor-hover {
+  transform: translate(-50%, -50%) scale(1.6);
+  background-color: var(--gold-light);
+}
+
+/* ==========================================================================
+   WARM CHAMPAGNE-GOLD RADIAL GLOW BEHIND CANVAS (MANDATORY NON-NEGOTIABLE)
+   ========================================================================== */
+.canvas-gold-glow-mandatory {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80vw;
+  height: 80vh;
+  max-width: 960px;
+  max-height: 960px;
+  border-radius: 50%;
+  /* EXACT MANDATORY SPEC: radial-gradient rgba(212,175,55,0.07) at center */
+  background: radial-gradient(circle at center, rgba(212, 175, 55, 0.07) 0%, rgba(212, 175, 55, 0.04) 35%, rgba(212, 175, 55, 0.015) 55%, transparent 72%);
+  pointer-events: none;
+  z-index: 1;
+  filter: blur(45px);
+  animation: canvasGlowBreath 7s ease-in-out infinite alternate;
+}
+
+@keyframes canvasGlowBreath {
+  0% {
+    opacity: 0.85;
+    transform: translate(-50%, -50%) scale(0.96);
+  }
+  100% {
+    opacity: 1.15;
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+}
+
+/* ==========================================================================
+   PRELOADER / LOADING SCREEN
+   ========================================================================== */
+.preloader-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: var(--bg-noir);
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.85s var(--ease-atelier), visibility 0.85s ease;
+}
+
+.preloader-overlay.loaded {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.preloader-monogram {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  letter-spacing: 0.35em;
+  color: var(--gold-champagne);
+  margin-bottom: 0.5rem;
+  text-indent: 0.35em;
+}
+
+.preloader-subtext {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 2.5rem;
+}
+
+.preloader-bar-track {
+  width: 220px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.preloader-bar-thumb {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #997B28, #D4AF37, #F4E7BE);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+  transition: width 0.15s ease-out;
+}
+
+.preloader-percentage {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: var(--gold-champagne);
+}
+
+/* ==========================================================================
+   LUXURY BUTTONS & CTAs
+   ========================================================================== */
+.btn-gold-luxury {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.95rem 2.2rem;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.12) 0%, rgba(212, 175, 55, 0.04) 100%);
+  border: 1px solid var(--gold-border-bright);
+  color: var(--text-ivory);
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  text-decoration: none;
+  border-radius: 1px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s var(--ease-atelier);
+  cursor: pointer;
+}
+
+.btn-gold-luxury::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.25) 0%, rgba(212, 175, 55, 0.08) 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.btn-gold-luxury:hover {
+  border-color: var(--gold-champagne);
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.28), inset 0 0 15px rgba(212, 175, 55, 0.1);
+  transform: translateY(-2px);
+  color: #FFFFFF;
+}
+
+.btn-gold-luxury:hover::before {
+  opacity: 1;
+}
+
+.btn-gold-luxury:active {
+  transform: translateY(0);
+}
+
+/* Ghost Luxury Button */
+.btn-ghost-luxury {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1.6rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-ghost-luxury:hover {
+  border-color: var(--gold-border-bright);
+  color: var(--text-ivory);
+  background: rgba(212, 175, 55, 0.04);
+}
+
+/* ==========================================================================
+   CARDS & CONTAINERS
+   ========================================================================== */
+.atelier-card {
+  background: var(--bg-card);
+  border: 1px solid var(--gold-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 2.5rem;
+  border-radius: 2px;
+  transition: all 0.45s var(--ease-atelier);
+  position: relative;
+  overflow: hidden;
+}
+
+.atelier-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold-champagne), transparent);
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+.atelier-card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--gold-border-bright);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4), 0 0 20px rgba(212, 175, 55, 0.08);
+}
+
+.atelier-card:hover::before {
+  opacity: 1;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-noir);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.25);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 175, 55, 0.5);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .atelier-card {
+    padding: 1.8rem;
+  }
+}
